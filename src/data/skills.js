@@ -1,0 +1,80 @@
+export const skillCategories = [
+  {
+    id: 1,
+    category: "Frontend",
+    color: "#ddf4ff",
+    borderColor: "#0969da",
+    skills: [
+      { name: "React", level: 95, color: "#61dafb" },
+      { name: "Next.js", level: 92, color: "#000000" },
+      { name: "TypeScript", level: 90, color: "#3178c6" },
+      { name: "Vue.js", level: 78, color: "#41b883" },
+      { name: "Tailwind CSS", level: 93, color: "#38bdf8" },
+      { name: "WebGL / Three.js", level: 65, color: "#049ef4" },
+    ],
+  },
+  {
+    id: 2,
+    category: "Backend",
+    color: "#fff8c5",
+    borderColor: "#9a6700",
+    skills: [
+      { name: "Node.js", level: 91, color: "#68a063" },
+      { name: "Go", level: 85, color: "#00add8" },
+      { name: "Python", level: 82, color: "#3572a5" },
+      { name: "Rust", level: 70, color: "#dea584" },
+      { name: "GraphQL", level: 88, color: "#e535ab" },
+      { name: "gRPC / Protobuf", level: 75, color: "#244c5a" },
+    ],
+  },
+  {
+    id: 3,
+    category: "Databases",
+    color: "#ffd8d3",
+    borderColor: "#cf222e",
+    skills: [
+      { name: "PostgreSQL", level: 89, color: "#336791" },
+      { name: "MongoDB", level: 80, color: "#47a248" },
+      { name: "Redis", level: 83, color: "#dc382d" },
+      { name: "Elasticsearch", level: 72, color: "#f04e98" },
+      { name: "DynamoDB", level: 68, color: "#ff9900" },
+    ],
+  },
+  {
+    id: 4,
+    category: "DevOps & Cloud",
+    color: "#dafbe1",
+    borderColor: "#1a7f37",
+    skills: [
+      { name: "Kubernetes", level: 84, color: "#326ce5" },
+      { name: "Docker", level: 91, color: "#2496ed" },
+      { name: "Terraform", level: 76, color: "#844fba" },
+      { name: "AWS", level: 82, color: "#ff9900" },
+      { name: "GitHub Actions", level: 90, color: "#24292f" },
+      { name: "Datadog", level: 71, color: "#632ca6" },
+    ],
+  },
+  {
+    id: 5,
+    category: "Tools & Practices",
+    color: "#fff1e5",
+    borderColor: "#bc4c00",
+    skills: [
+      { name: "Git / GitHub", level: 97, color: "#f05032" },
+      { name: "Linux / Bash", level: 88, color: "#fcc624" },
+      { name: "Vim / Neovim", level: 79, color: "#019733" },
+      { name: "Figma", level: 74, color: "#f24e1e" },
+      { name: "Postman / Insomnia", level: 86, color: "#ef5b25" },
+    ],
+  },
+];
+
+export const topLanguages = [
+  { name: "JavaScript", color: "#f1e05a", percent: 30 },
+  { name: "TypeScript", color: "#3178c6", percent: 25 },
+  { name: "Python", color: "#3572a5", percent: 15 },
+  { name: "Dart", color: "#00B4AB", percent: 12 },
+  { name: "Tailwind CSS", color: "#38bdf8", percent: 10 },
+  { name: "CSS", color: "#563d7c", percent: 5 },
+  { name: "JSON", color: "#a6b025", percent: 3 },
+];

@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Mona Sans", system-ui, sans-serif;
+  background-color: #ffffff;
+  color: #1f2328;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GitHub-style scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f6f8fa; }
+::-webkit-scrollbar-thumb { background: #d0d7de; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #afb8c1; }
+
+/* Smooth tab indicator transition */
+.tab-active {
+  border-bottom: 2px solid #fd8c73;
+  color: #1f2328;
+  font-weight: 600;
+}
+
+/* Language dot colors */
+.lang-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Contribution graph cell */
+.contrib-cell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.35s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
