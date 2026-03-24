@@ -3,11 +3,12 @@
  *
  * This file manages the profile image for the portfolio.
  *
- * To use your own profile image:
- * 1. Replace the 'profile.jpg' file in this folder with your image
- * 2. Supported formats: JPG, PNG, GIF, WebP
- * 3. Recommended size: 260x260px or larger (square aspect ratio)
- * 4. Maximum file size: 5MB
+ * To use your profile image:
+ * 1. Go to src/utils/imageUtils.js
+ * 2. Replace the PROFILE_IMAGE_URL with your internet image URL
+ * 3. Make sure the URL is publicly accessible and allows cross-origin requests
+ * 4. Supported formats: JPG, PNG, GIF, WebP
+ * 5. Recommended size: 260x260px or larger (square aspect ratio)
  *
  * If no image is found, the component will fallback to initials on a gradient background.
  */

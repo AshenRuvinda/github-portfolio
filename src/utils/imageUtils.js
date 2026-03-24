@@ -3,8 +3,8 @@
  * Functions for handling profile image storage and management
  */
 
-// Default profile image path
-export const DEFAULT_PROFILE_IMAGE = '/src/assets/images/profile.jpg';
+// You can set this to an internet URL for your profile picture
+export const PROFILE_IMAGE_URL = 'https://github.com/AshenRuvinda/ProjectImages/blob/master/profile.jpg?raw=true'; // Replace with your internet image URL
 
 // Fallback image (gradient with initials)
 export const FALLBACK_AVATAR = {
@@ -19,7 +19,7 @@ export const FALLBACK_AVATAR = {
  * @returns {string} The profile image URL
  */
 export const getProfileImageUrl = () => {
-  return DEFAULT_PROFILE_IMAGE;
+  return PROFILE_IMAGE_URL;
 };
 
 /**
