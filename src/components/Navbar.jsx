@@ -63,7 +63,7 @@ export default function Navbar({ activeTab, onTabChange }) {
     <header className="bg-[#24292f] text-[#e6edf3] border-b border-[#3d444d] sticky top-0 z-50">
       <div className="max-w-[1280px] mx-auto px-4 flex items-center gap-4 h-[62px]">
         {/* Logo */}
-        <a href="#" className="text-white hover:text-gray-300 flex-shrink-0 transition-colors">
+        <a href="https://github.com/AshenRuvinda" className="text-white hover:text-gray-300 flex-shrink-0 transition-colors">
           <GitHubIcon />
         </a>
 

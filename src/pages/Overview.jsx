@@ -136,7 +136,7 @@ function ReadmeCard() {
               Currently working on
             </h3>
             <p className="text-[#656d76]">
-              Furo Labs— Startup Dev Team.
+              Furo Labs Pvt. Ltd.
             </p>
           </div>
           <div>

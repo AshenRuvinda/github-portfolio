@@ -56,7 +56,7 @@ export default function Experience() {
         <div>
           <p className="text-sm font-semibold text-green-800">Open to opportunities</p>
           <p className="text-xs text-green-700 mt-0.5">
-            I'm selectively open to senior and staff engineer roles, particularly in infrastructure, developer tools, or AI. Remote-first strongly preferred.
+           Interested in full-time roles in software development, especially in MERN stack and open source projects. Feel free to reach out!
           </p>
         </div>
       </div>
