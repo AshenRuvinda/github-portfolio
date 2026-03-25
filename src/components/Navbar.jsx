@@ -123,15 +123,7 @@ export default function Navbar({ activeTab, onTabChange }) {
 
         <div className="flex-1" />
 
-        {/* Plus / Create */}
-        <button className="hidden sm:flex items-center gap-1 text-[#e6edf3] hover:text-white transition-colors px-2 py-1 rounded-md hover:bg-white/10 text-sm">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+        
       </div>
 
       {/* Mobile Menu */}
