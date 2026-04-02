@@ -1,8 +1,12 @@
 // GitHub API utility for fetching contribution data
-const GITHUB_TOKEN = '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'; // Add your GitHub personal access token here
-const GITHUB_USERNAME = 'ashenruvinda'; // Your GitHub username
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN || '';
+const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'ashenruvinda';
 
 export async function fetchContributionCalendar(year = null) {
+  if (!GITHUB_TOKEN) {
+    throw new Error('Missing GitHub token: set VITE_GITHUB_TOKEN in .env');
+  }
+
   // Calculate date range for the specified year
   const currentYear = new Date().getFullYear();
   const targetYear = year || currentYear;
