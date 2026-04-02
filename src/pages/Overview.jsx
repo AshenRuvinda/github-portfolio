@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RepoCard from '../components/RepoCard';
 import Skills from '../components/Skills';
 import { pinnedProjects } from '../data/projects';
-import { fetchContributionCalendar, fetchUserCounts, fetchRecentActivities } from '../utils/githubApi';
+import { fetchContributionCalendar, fetchUserCounts, fetchRecentActivities, fetchTopLanguages, fetchFollowers, fetchOrganizations } from '../utils/githubApi';
 
 // Mini contribution graph generator
 function ContributionGraph() {
@@ -273,6 +273,15 @@ function SidePanel() {
   const [recentActivities, setRecentActivities] = useState([]);
   const [activityLoading, setActivityLoading] = useState(true);
   const [activityError, setActivityError] = useState('');
+  const [topLanguagesData, setTopLanguagesData] = useState([]);
+  const [topLanguagesLoading, setTopLanguagesLoading] = useState(true);
+  const [topLanguagesError, setTopLanguagesError] = useState('');
+  const [followers, setFollowers] = useState([]);
+  const [followersLoading, setFollowersLoading] = useState(true);
+  const [followersError, setFollowersError] = useState('');
+  const [organizations, setOrganizations] = useState([]);
+  const [orgsLoading, setOrgsLoading] = useState(true);
+  const [orgsError, setOrgsError] = useState('');
 
   useEffect(() => {
     let isMounted = true;
@@ -290,14 +299,57 @@ function SidePanel() {
       }
     };
 
+    const loadLanguages = async () => {
+      try {
+        setTopLanguagesLoading(true);
+        setTopLanguagesError('');
+        const languages = await fetchTopLanguages(6);
+        if (isMounted && languages.length > 0) setTopLanguagesData(languages);
+      } catch (err) {
+        if (isMounted) setTopLanguagesError(err.message || 'Unable to load top languages');
+      } finally {
+        if (isMounted) setTopLanguagesLoading(false);
+      }
+    };
+
     loadActivities();
+    loadLanguages();
+
+    const loadFollowers = async () => {
+      try {
+        setFollowersLoading(true);
+        setFollowersError('');
+        const data = await fetchFollowers(9);
+        if (isMounted) setFollowers(data);
+      } catch (err) {
+        if (isMounted) setFollowersError(err.message || 'Unable to load followers');
+      } finally {
+        if (isMounted) setFollowersLoading(false);
+      }
+    };
+
+    const loadOrganizations = async () => {
+      try {
+        setOrgsLoading(true);
+        setOrgsError('');
+        const orgs = await fetchOrganizations(9);
+        if (isMounted) setOrganizations(orgs);
+      } catch (err) {
+        if (isMounted) setOrgsError(err.message || 'Unable to load organizations');
+      } finally {
+        if (isMounted) setOrgsLoading(false);
+      }
+    };
+
+    loadFollowers();
+    loadOrganizations();
 
     return () => {
       isMounted = false;
     };
   }, []);
 
-  const topLanguages = (() => {
+  const topLanguages = topLanguagesData.length ? topLanguagesData : (() => {
     const counts = {};
     const colorMap = {};
     pinnedProjects.forEach((repo) => {
@@ -340,18 +392,53 @@ function SidePanel() {
       <div className="border border-[#d0d7de] rounded-lg p-4 bg-white">
         <h3 className="text-sm font-semibold text-[#1f2328] mb-3">People</h3>
         <div className="flex flex-wrap gap-2">
-          {Array.from({ length: 9 }, (_, i) => (
-            <div
-              key={i}
-              className="w-8 h-8 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-[#0969da] transition-all"
-              style={{ background: `hsl(${i * 40}, 60%, 55%)` }}
-              title={`Collaborator ${i + 1}`}
-            >
-              <div className="w-full h-full flex items-center justify-center text-white text-xs font-bold">
-                {String.fromCharCode(65 + i)}
-              </div>
-            </div>
-          ))}
+          {followersLoading ? (
+            <p className="text-xs text-[#656d76]">Loading followers...</p>
+          ) : followersError ? (
+            <p className="text-xs text-red-600 dark:text-red-400">{followersError}</p>
+          ) : followers.length === 0 ? (
+            <p className="text-xs text-[#656d76]">No followers found.</p>
+          ) : (
+            followers.map((user) => (
+              <a
+                key={user.login}
+                href={user.html_url}
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-[#0969da] transition-all"
+                title={user.login}
+              >
+                <img src={user.avatar_url} alt={user.login} className="w-full h-full object-cover" />
+              </a>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Organizations */}
+      <div className="border border-[#d0d7de] rounded-lg p-4 bg-white">
+        <h3 className="text-sm font-semibold text-[#1f2328] mb-3">Organizations</h3>
+        <div className="flex flex-wrap gap-2">
+          {orgsLoading ? (
+            <p className="text-xs text-[#656d76]">Loading organizations...</p>
+          ) : orgsError ? (
+            <p className="text-xs text-red-600 dark:text-red-400">{orgsError}</p>
+          ) : organizations.length === 0 ? (
+            <p className="text-xs text-[#656d76]">No organizations found.</p>
+          ) : (
+            organizations.map((org) => (
+              <a
+                key={org.login}
+                href={org.html_url}
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-[#0969da] transition-all"
+                title={org.login}
+              >
+                <img src={org.avatar_url} alt={org.login} className="w-full h-full object-cover" />
+              </a>
+            ))
+          )}
         </div>
       </div>
 
@@ -359,15 +446,23 @@ function SidePanel() {
       <div className="border border-[#d0d7de] rounded-lg p-4 bg-white">
         <h3 className="text-sm font-semibold text-[#1f2328] mb-3">Top languages</h3>
         <div className="space-y-2">
-          {topLanguages.map((lang) => (
-            <div key={lang.name} className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-2">
-                <span className="lang-dot" style={{ backgroundColor: lang.color }} />
-                <span className="text-[#1f2328]">{lang.name}</span>
+          {topLanguagesLoading ? (
+            <p className="text-xs text-[#656d76]">Loading top languages...</p>
+          ) : topLanguagesError ? (
+            <p className="text-xs text-red-600 dark:text-red-400">{topLanguagesError}</p>
+          ) : topLanguages.length === 0 ? (
+            <p className="text-xs text-[#656d76]">No languages found.</p>
+          ) : (
+            topLanguages.map((lang) => (
+              <div key={lang.name} className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="lang-dot" style={{ backgroundColor: lang.color }} />
+                  <span className="text-[#1f2328]">{lang.name}</span>
+                </div>
+                <span className="text-[#656d76] text-xs">{lang.percent}%</span>
               </div>
-              <span className="text-[#656d76] text-xs">{lang.percent}%</span>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 

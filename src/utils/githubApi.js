@@ -120,6 +120,107 @@ export async function checkFollowingStatus() {
   return response.status === 204;
 }
 
+export async function fetchTopLanguages(limit = 7) {
+  const url = `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&type=owner&sort=pushed`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : undefined,
+      Accept: 'application/vnd.github+json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`GitHub API repo language error: ${response.status}`);
+  }
+
+  const repos = await response.json();
+
+  const counts = {};
+  repos.forEach((repo) => {
+    if (!repo.language) return;
+    counts[repo.language] = (counts[repo.language] || 0) + 1;
+  });
+
+  const total = Object.values(counts).reduce((sum, value) => sum + value, 0);
+  if (total === 0) {
+    return [];
+  }
+
+  const languageColors = {
+    JavaScript: '#f1e05a',
+    TypeScript: '#3178c6',
+    Python: '#3572a5',
+    Java: '#b07219',
+    Go: '#00add8',
+    Ruby: '#701516',
+    PHP: '#4f5d95',
+    C: '#555555',
+    'C++': '#f34b7d',
+    'C#': '#178600',
+    Swift: '#ffac45',
+    Kotlin: '#A97BFF',
+    Rust: '#dea584',
+    Dart: '#00B4AB',
+    CSS: '#563d7c',
+    HTML: '#e34c26',
+    'Tailwind CSS': '#38bdf8',
+  };
+
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([name, value]) => ({
+      name,
+      percent: Math.round((value / total) * 100),
+      color: languageColors[name] || '#8b949e',
+    }));
+}
+
+export async function fetchFollowers(limit = 9) {
+  const url = `https://api.github.com/users/${GITHUB_USERNAME}/followers?per_page=${limit}`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : undefined,
+      Accept: 'application/vnd.github+json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`GitHub API followers error: ${response.status}`);
+  }
+
+  const followers = await response.json();
+
+  return followers.map((user) => ({
+    login: user.login,
+    avatar_url: user.avatar_url,
+    html_url: user.html_url,
+  }));
+}
+
+export async function fetchOrganizations(limit = 9) {
+  const url = `https://api.github.com/users/${GITHUB_USERNAME}/orgs?per_page=${limit}`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : undefined,
+      Accept: 'application/vnd.github+json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`GitHub API organizations error: ${response.status}`);
+  }
+
+  const orgs = await response.json();
+
+  return orgs.map((org) => ({
+    login: org.login,
+    avatar_url: org.avatar_url,
+    html_url: org.html_url,
+    description: org.description || '',
+  }));
+}
+
 export async function fetchRecentActivities(limit = 5) {
   const url = `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=${limit}`;
   const response = await fetch(url, {
@@ -139,6 +240,7 @@ export async function fetchRecentActivities(limit = 5) {
     const repoName = event.repo?.name || 'unknown';
     const at = new Date(event.created_at).toLocaleString();
     let text = '';
+
     switch (event.type) {
       case 'PushEvent': {
         const commitCount = event.payload?.commits?.length || 0;
@@ -147,7 +249,7 @@ export async function fetchRecentActivities(limit = 5) {
       }
       case 'PullRequestEvent': {
         const action = event.payload?.action || 'updated';
-        const title = event.payload?.pull_request?.title || ''; 
+        const title = event.payload?.pull_request?.title || '';
         text = `${action} pull request '${title}' in ${repoName}`;
         break;
       }

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { skillCategories, topLanguages } from '../data/skills';
+import React, { useState, useEffect } from 'react';
+import { skillCategories, topLanguages as staticTopLanguages } from '../data/skills';
+import { fetchTopLanguages } from '../utils/githubApi';
 
 function SkillBar({ skill }) {
   return (
@@ -45,14 +46,48 @@ function LanguageBar({ languages }) {
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState(skillCategories[0].id);
+  const [topLanguages, setTopLanguages] = useState(staticTopLanguages);
+  const [isLangLoading, setIsLangLoading] = useState(true);
+  const [langError, setLangError] = useState('');
   const current = skillCategories.find((c) => c.id === activeCategory);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadTopLanguages = async () => {
+      try {
+        setIsLangLoading(true);
+        setLangError('');
+        const langs = await fetchTopLanguages(7);
+        if (mounted && langs.length > 0) {
+          setTopLanguages(langs);
+        }
+      } catch (err) {
+        if (mounted) setLangError(err.message || 'Unable to fetch top languages');
+      } finally {
+        if (mounted) setIsLangLoading(false);
+      }
+    };
+
+    loadTopLanguages();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <div className="space-y-6">
       {/* Top Languages */}
       <div className="border border-[#d0d7de] rounded-lg p-5 bg-white">
         <h3 className="text-sm font-semibold text-[#1f2328] mb-4">Top Languages</h3>
-        <LanguageBar languages={topLanguages} />
+        {isLangLoading ? (
+          <p className="text-xs text-[#656d76]">Loading top languages...</p>
+        ) : langError ? (
+          <p className="text-xs text-red-600 dark:text-red-400">{langError}</p>
+        ) : (
+          <LanguageBar languages={topLanguages} />
+        )}
       </div>
 
       {/* Skill categories */}
