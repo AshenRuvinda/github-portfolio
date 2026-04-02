@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RepoCard from '../components/RepoCard';
 import Skills from '../components/Skills';
 import { pinnedProjects } from '../data/projects';
-import { fetchContributionCalendar } from '../utils/githubApi';
+import { fetchContributionCalendar, fetchUserCounts, fetchRecentActivities } from '../utils/githubApi';
 
 // Mini contribution graph generator
 function ContributionGraph() {
@@ -172,6 +172,25 @@ function ContributionGraph() {
 }
 
 function ReadmeCard() {
+  const [followers, setFollowers] = useState(0);
+  const [loadingFollowers, setLoadingFollowers] = useState(true);
+  const [followersError, setFollowersError] = useState('');
+
+  useEffect(() => {
+    const loadFollowers = async () => {
+      try {
+        setLoadingFollowers(true);
+        const stats = await fetchUserCounts();
+        setFollowers(stats.followers);
+      } catch (err) {
+        setFollowersError(err.message || 'Could not load followers');
+      } finally {
+        setLoadingFollowers(false);
+      }
+    };
+    loadFollowers();
+  }, []);
+
   return (
     <div className="border border-[#d0d7de] rounded-lg overflow-hidden bg-white">
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#d0d7de] bg-[#f6f8fa]">
@@ -188,7 +207,7 @@ function ReadmeCard() {
           <div className="flex flex-wrap justify-center gap-2 mt-3">
             {[
               { label: 'Profile Views', value: '24k', color: 'bg-blue-100 text-blue-800' },
-              { label: 'Followers', value: '1.4k', color: 'bg-green-100 text-green-800' },
+              { label: 'Followers', value: loadingFollowers ? '...' : (followersError ? 'N/A' : followers.toLocaleString()), color: 'bg-green-100 text-green-800' },
               { label: 'Stars', value: '1.7k', color: 'bg-yellow-100 text-yellow-800' },
             ].map((badge) => (
               <span key={badge.label} className={`text-xs px-3 py-1 rounded-full font-medium ${badge.color}`}>
@@ -251,6 +270,33 @@ function ReadmeCard() {
 }
 
 function SidePanel() {
+  const [recentActivities, setRecentActivities] = useState([]);
+  const [activityLoading, setActivityLoading] = useState(true);
+  const [activityError, setActivityError] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadActivities = async () => {
+      try {
+        setActivityLoading(true);
+        setActivityError('');
+        const events = await fetchRecentActivities(6);
+        if (isMounted) setRecentActivities(events);
+      } catch (err) {
+        if (isMounted) setActivityError(err.message || 'Unable to load activities');
+      } finally {
+        if (isMounted) setActivityLoading(false);
+      }
+    };
+
+    loadActivities();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const topLanguages = (() => {
     const counts = {};
     const colorMap = {};
@@ -329,30 +375,23 @@ function SidePanel() {
       <div className="border border-[#d0d7de] rounded-lg p-4 bg-white">
         <h3 className="text-sm font-semibold text-[#1f2328] mb-3">Recent Activity</h3>
         <div className="space-y-3 text-xs text-[#656d76]">
-          {[
-            { icon: 'star', text: 'Starred vercel/next.js', time: '2h ago' },
-            { icon: 'git-branch', text: 'Opened PR in golang/go', time: '4h ago' },
-            { icon: 'comment', text: 'Commented on #4821', time: '1d ago' },
-            { icon: 'rocket', text: 'Released NexusAI v2.1', time: '2d ago' },
-            { icon: 'fork', text: 'Forked torvalds/linux', time: '3d ago' },
-          ].map((a, i) => {
-            const iconSvgs = {
-              star: <svg key="star" className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>,
-              'git-branch': <svg key="git" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>,
-              comment: <svg key="comment" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>,
-              rocket: <svg key="rocket" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
-              fork: <svg key="fork" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 5v10M16 5v10M12 15v4m-4-1h8" /></svg>,
-            };
-            return (
-            <div key={i} className="flex items-start gap-2">
-              <span className="text-base leading-none flex-shrink-0">{iconSvgs[a.icon]}</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-[#1f2328] truncate">{a.text}</p>
-                <p className="text-[10px]">{a.time}</p>
+          {activityLoading ? (
+            <div className="text-xs text-[#939ba2]">Loading activity...</div>
+          ) : activityError ? (
+            <div className="text-xs text-red-600 dark:text-red-400">{activityError}</div>
+          ) : recentActivities.length === 0 ? (
+            <div className="text-xs text-[#939ba2]">No recent activity found.</div>
+          ) : (
+            recentActivities.map((a) => (
+              <div key={a.id} className="flex items-start gap-2">
+                <span className="text-base leading-none flex-shrink-0">•</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[#1f2328] truncate">{a.text}</p>
+                  <p className="text-[10px]">{a.time}</p>
+                </div>
               </div>
-            </div>
-            );
-          })}
+            ))
+          )}
         </div>
       </div>
     </div>
