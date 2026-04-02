@@ -1,60 +1,132 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import RepoCard from '../components/RepoCard';
 import Skills from '../components/Skills';
 import { pinnedProjects } from '../data/projects';
+import { fetchContributionCalendar } from '../utils/githubApi';
 
 // Mini contribution graph generator
 function ContributionGraph() {
-  const weeks = 52;
-  const days = 7;
-  const levels = [0, 1, 2, 3, 4];
-  const colors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+  const [contributionData, setContributionData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isDark, setIsDark] = useState(false);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const cells = Array.from({ length: weeks }, (_, w) =>
-    Array.from({ length: days }, (_, d) => {
-      // Create more realistic contribution patterns
-      const isWeekend = d === 0 || d === 6;
-      const weekProgress = w / weeks; // 0 to 1 progress through the year
-      const rand = Math.random();
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
 
-      // Higher activity during work periods (weekdays)
-      if (!isWeekend) {
-        // Simulate project work periods with higher activity
-        const isActivePeriod = (weekProgress > 0.1 && weekProgress < 0.3) || // Early year projects
-                              (weekProgress > 0.4 && weekProgress < 0.6) || // Mid year work
-                              (weekProgress > 0.7 && weekProgress < 0.9);   // Recent activity
+    checkTheme();
 
-        if (isActivePeriod) {
-          // High activity periods
-          return rand < 0.3 ? 0 : rand < 0.6 ? 1 : rand < 0.8 ? 2 : rand < 0.95 ? 3 : 4;
-        } else {
-          // Normal activity
-          return rand < 0.4 ? 0 : rand < 0.7 ? 1 : rand < 0.9 ? 2 : 3;
-        }
-      } else {
-        // Weekends have lower activity
-        return rand < 0.8 ? 0 : rand < 0.95 ? 1 : 2;
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchContributionCalendar(selectedYear);
+        setContributionData(data);
+      } catch (err) {
+        setError(err.message);
+        // Fallback to fake data if API fails
+        setContributionData({
+          totalContributions: 387,
+          weeks: Array.from({ length: 52 }, (_, w) =>
+            ({
+              contributionDays: Array.from({ length: 7 }, (_, d) => {
+                const isWeekend = d === 0 || d === 6;
+                const weekProgress = w / 52;
+                const rand = Math.random();
+
+                if (!isWeekend) {
+                  const isActivePeriod = (weekProgress > 0.1 && weekProgress < 0.3) ||
+                                        (weekProgress > 0.4 && weekProgress < 0.6) ||
+                                        (weekProgress > 0.7 && weekProgress < 0.9);
+
+                  if (isActivePeriod) {
+                    return { contributionCount: rand < 0.3 ? 0 : rand < 0.6 ? 1 : rand < 0.8 ? 2 : rand < 0.95 ? 3 : 4 };
+                  } else {
+                    return { contributionCount: rand < 0.4 ? 0 : rand < 0.7 ? 1 : rand < 0.9 ? 2 : 3 };
+                  }
+                } else {
+                  return { contributionCount: rand < 0.8 ? 0 : rand < 0.95 ? 1 : 2 };
+                }
+              })
+            })
+          )
+        });
+      } finally {
+        setLoading(false);
       }
-    })
-  );
+    };
+
+    loadData();
+  }, [selectedYear]);
+
+  if (loading) {
+    return (
+      <div className="border border-[#d0d7de] dark:border-[#30363d] rounded-lg p-5 bg-white dark:bg-[#161b22]">
+        <div className="animate-pulse">
+          <div className="h-4 bg-[#f6f8fa] dark:bg-[#21262d] rounded mb-4"></div>
+          <div className="h-32 bg-[#f6f8fa] dark:bg-[#21262d] rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+  const colors = isDark
+    ? ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
+    : ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+
+  const getContributionLevel = (count) => {
+    if (count === 0) return 0;
+    if (count <= 3) return 1;
+    if (count <= 6) return 2;
+    if (count <= 9) return 3;
+    return 4;
+  };
+
+  const cells = contributionData?.weeks?.slice(-52).map(week =>
+    week.contributionDays.map(day => getContributionLevel(day.contributionCount))
+  ) || [];
 
   return (
-    <div className="border border-[#d0d7de] rounded-lg p-5 bg-white">
+    <div className="border border-[#d0d7de] dark:border-[#30363d] rounded-lg p-5 bg-white dark:bg-[#161b22]">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-sm font-semibold text-[#1f2328]">
-          387 contributions in the last year
+        <h3 className="text-sm font-semibold text-[#1f2328] dark:text-[#c9d1d9]">
+          {contributionData?.totalContributions || 0} contributions in {selectedYear}
         </h3>
-        <select className="text-xs border border-[#d0d7de] rounded-md px-2 py-1 bg-[#f6f8fa] text-[#656d76]">
-          <option>2026</option>
-          <option>2025</option>
-          <option>2024</option>
+        <select 
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+          className="text-xs border border-[#d0d7de] dark:border-[#30363d] rounded-md px-2 py-1 bg-[#f6f8fa] dark:bg-[#21262d] text-[#656d76] dark:text-[#8b949e]"
+        >
+          <option value={2026}>2026</option>
+          <option value={2025}>2025</option>
+          <option value={2024}>2024</option>
+          <option value={2023}>2023</option>
         </select>
       </div>
+
+      {error && (
+        <div className="text-xs text-red-600 dark:text-red-400 mb-4">
+          Failed to load contribution data: {error}
+        </div>
+      )}
 
       {/* Month labels */}
       <div className="overflow-x-auto">
         <div className="min-w-[640px]">
-          <div className="flex gap-[3px] mb-1 pl-8 text-[10px] text-[#656d76]">
+          <div className="flex gap-[3px] mb-1 pl-8 text-[10px] text-[#656d76] dark:text-[#8b949e]">
             {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m) => (
               <div key={m} className="flex-1">{m}</div>
             ))}
@@ -62,7 +134,7 @@ function ContributionGraph() {
 
           <div className="flex gap-1">
             {/* Day labels */}
-            <div className="flex flex-col gap-[3px] text-[10px] text-[#656d76] mr-1">
+            <div className="flex flex-col gap-[3px] text-[10px] text-[#656d76] dark:text-[#8b949e] mr-1">
               {['', 'Mon', '', 'Wed', '', 'Fri', ''].map((d, i) => (
                 <div key={i} className="h-[11px] leading-[11px]">{d}</div>
               ))}
@@ -75,9 +147,9 @@ function ContributionGraph() {
                   {week.map((level, di) => (
                     <div
                       key={di}
-                      className="contrib-cell rounded-[2px] cursor-pointer hover:ring-1 hover:ring-[#0969da] transition-all"
+                      className="contrib-cell rounded-[2px] cursor-pointer hover:ring-1 hover:ring-[#0969da] dark:hover:ring-[#58a6ff] transition-all"
                       style={{ backgroundColor: colors[level] }}
-                      title={`${level} contributions`}
+                      title={`${contributionData?.weeks?.[wi]?.contributionDays?.[di]?.contributionCount || level} contributions`}
                     />
                   ))}
                 </div>
@@ -86,7 +158,7 @@ function ContributionGraph() {
           </div>
 
           {/* Legend */}
-          <div className="flex items-center gap-1 mt-2 justify-end text-[10px] text-[#656d76]">
+          <div className="flex items-center gap-1 mt-2 justify-end text-[10px] text-[#656d76] dark:text-[#8b949e]">
             <span>Less</span>
             {colors.map((c) => (
               <div key={c} className="contrib-cell rounded-[2px]" style={{ backgroundColor: c }} />

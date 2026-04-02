@@ -15,11 +15,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Dark mode styles */
+html.dark body {
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+
 /* GitHub-style scrollbar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #f6f8fa; }
 ::-webkit-scrollbar-thumb { background: #d0d7de; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #afb8c1; }
+
+/* Dark mode scrollbar */
+html.dark ::-webkit-scrollbar-track { background: #161b22; }
+html.dark ::-webkit-scrollbar-thumb { background: #30363d; }
+html.dark ::-webkit-scrollbar-thumb:hover { background: #484f58; }
 
 /* Smooth tab indicator transition */
 .tab-active {
