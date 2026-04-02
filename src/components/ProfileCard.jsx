@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { profileImage } from '../assets/images/profile';
+import { fetchUserCounts, checkFollowingStatus, followGitHubUser, unfollowGitHubUser } from '../utils/githubApi';
 
 const LocationIcon = () => (
   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -40,6 +41,52 @@ const WhatsAppIcon = () => (
 
 export default function ProfileCard() {
   const [following, setFollowing] = useState(false);
+  const [followers, setFollowers] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [followLoading, setFollowLoading] = useState(false);
+  const [followError, setFollowError] = useState('');
+
+  useEffect(() => {
+    const loadFollowerData = async () => {
+      try {
+        const [{ followers: followerCount, following: followingTotal }, isFollowing] = await Promise.all([
+          fetchUserCounts(),
+          checkFollowingStatus(),
+        ]);
+
+        setFollowers(followerCount);
+        setFollowingCount(followingTotal);
+        setFollowing(isFollowing);
+      } catch (error) {
+        console.error('Follower data error:', error);
+      }
+    };
+
+    loadFollowerData();
+  }, []);
+
+  const handleFollowClick = async () => {
+    setFollowError('');
+    setFollowLoading(true);
+
+    try {
+      if (following) {
+        await unfollowGitHubUser();
+        setFollowing(false);
+        setFollowers((prev) => Math.max(prev - 1, 0));
+      } else {
+        await followGitHubUser();
+        setFollowing(true);
+        setFollowers((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error('Follow action failed:', error);
+      setFollowError('Could not update follow status. Click to open profile.');
+      window.open('https://github.com/ashenruvinda', '_blank');
+    } finally {
+      setFollowLoading(false);
+    }
+  };
 
   return (
     <aside className="w-full">
@@ -76,30 +123,34 @@ export default function ProfileCard() {
       </p>
 
       {/* Follow button */}
-      <div className="flex gap-2 mb-5">
-        <button
-          onClick={() => setFollowing(!following)}
-          className={`flex-1 py-1.5 px-3 text-sm font-semibold rounded-md border transition-all ${
-            following
-              ? 'bg-white text-[#1f2328] border-[#d0d7de] hover:bg-[#f3f4f6] hover:border-[#afb8c1]'
-              : 'bg-[#1f2328] text-white border-[#1f2328] hover:bg-[#31373d]'
-          }`}
-        >
-          {following ? 'Following' : 'Follow'}
-        </button>
-        <button className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#d0d7de] bg-[#f6f8fa] hover:bg-[#f3f4f6] hover:border-[#afb8c1] text-[#1f2328] transition-all">
-          Sponsor
-        </button>
+      <div className="flex flex-col gap-2 mb-5">
+        <div className="flex gap-2">
+          <button
+            onClick={handleFollowClick}
+            disabled={followLoading}
+            className={`flex-1 py-1.5 px-3 text-sm font-semibold rounded-md border transition-all ${
+              following
+                ? 'bg-white text-[#1f2328] border-[#d0d7de] hover:bg-[#f3f4f6] hover:border-[#afb8c1]'
+                : 'bg-[#1f2328] text-white border-[#1f2328] hover:bg-[#31373d]'
+            } ${followLoading ? 'opacity-70 cursor-wait' : ''}`}
+          >
+            {following ? 'Following' : 'Follow'}
+          </button>
+          <button className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#d0d7de] bg-[#f6f8fa] hover:bg-[#f3f4f6] hover:border-[#afb8c1] text-[#1f2328] transition-all">
+            Sponsor
+          </button>
+        </div>
+        {followError && <p className="text-xs text-red-600">{followError}</p>}
       </div>
 
       {/* Stats */}
       <div className="flex gap-4 mb-5 text-sm text-[#656d76]">
-        <a href="#" className="hover:text-[#0969da] flex items-center gap-1.5 transition-colors">
+        <a href="https://github.com/ashenruvinda?tab=followers" target="_blank" rel="noreferrer" className="hover:text-[#0969da] flex items-center gap-1.5 transition-colors">
           <UsersIcon />
-          <span><strong className="text-[#1f2328]">1.4k</strong> followers</span>
+          <span><strong className="text-[#1f2328]">{followers.toLocaleString()}</strong> followers</span>
         </a>
-        <a href="#" className="hover:text-[#0969da] flex items-center gap-1.5 transition-colors">
-          <span><strong className="text-[#1f2328]">312</strong> following</span>
+        <a href="https://github.com/ashenruvinda?tab=following" target="_blank" rel="noreferrer" className="hover:text-[#0969da] flex items-center gap-1.5 transition-colors">
+          <span><strong className="text-[#1f2328]">{followingCount.toLocaleString()}</strong> following</span>
         </a>
       </div>
 
