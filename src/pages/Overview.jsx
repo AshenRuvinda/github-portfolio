@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RepoCard from '../components/RepoCard';
 import Skills from '../components/Skills';
 import { pinnedProjects } from '../data/projects';
-import { fetchContributionCalendar, fetchUserCounts, fetchRecentActivities, fetchTopLanguages, fetchFollowers, fetchOrganizations } from '../utils/githubApi';
+import { fetchContributionCalendar, fetchUserCounts, fetchRecentActivities, fetchTopLanguages, fetchFollowers, fetchUserAchievements } from '../utils/githubApi';
 
 // Mini contribution graph generator
 function ContributionGraph() {
@@ -279,9 +279,11 @@ function SidePanel() {
   const [followers, setFollowers] = useState([]);
   const [followersLoading, setFollowersLoading] = useState(true);
   const [followersError, setFollowersError] = useState('');
-  const [organizations, setOrganizations] = useState([]);
-  const [orgsLoading, setOrgsLoading] = useState(true);
-  const [orgsError, setOrgsError] = useState('');
+  const [achievements, setAchievements] = useState([]);
+  const [achievementsLoading, setAchievementsLoading] = useState(true);
+  const [achievementsError, setAchievementsError] = useState('');
+  const [hoveredAchievement, setHoveredAchievement] = useState(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     let isMounted = true;
@@ -328,21 +330,21 @@ function SidePanel() {
       }
     };
 
-    const loadOrganizations = async () => {
+    const loadAchievements = async () => {
       try {
-        setOrgsLoading(true);
-        setOrgsError('');
-        const orgs = await fetchOrganizations(9);
-        if (isMounted) setOrganizations(orgs);
+        setAchievementsLoading(true);
+        setAchievementsError('');
+        const list = await fetchUserAchievements(9);
+        if (isMounted) setAchievements(list);
       } catch (err) {
-        if (isMounted) setOrgsError(err.message || 'Unable to load organizations');
+        if (isMounted) setAchievementsError(err.message || 'Unable to load achievements');
       } finally {
-        if (isMounted) setOrgsLoading(false);
+        if (isMounted) setAchievementsLoading(false);
       }
     };
 
     loadFollowers();
-    loadOrganizations();
+    loadAchievements();
 
     return () => {
       isMounted = false;
@@ -415,29 +417,56 @@ function SidePanel() {
         </div>
       </div>
 
-      {/* Organizations */}
+      {/* Achievements */}
       <div className="border border-[#d0d7de] rounded-lg p-4 bg-white">
-        <h3 className="text-sm font-semibold text-[#1f2328] mb-3">Organizations</h3>
-        <div className="flex flex-wrap gap-2">
-          {orgsLoading ? (
-            <p className="text-xs text-[#656d76]">Loading organizations...</p>
-          ) : orgsError ? (
-            <p className="text-xs text-red-600 dark:text-red-400">{orgsError}</p>
-          ) : organizations.length === 0 ? (
-            <p className="text-xs text-[#656d76]">No organizations found.</p>
+        <h3 className="text-sm font-semibold text-[#1f2328] mb-3">Achievements</h3>
+        <div className="space-y-2 text-xs text-[#656d76]">
+          {achievementsLoading ? (
+            <p>Loading achievements...</p>
+          ) : achievementsError ? (
+            <p className="text-red-600 dark:text-red-400">{achievementsError}</p>
+          ) : achievements.length === 0 ? (
+            <p>No achievements found.</p>
           ) : (
-            organizations.map((org) => (
-              <a
-                key={org.login}
-                href={org.html_url}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-[#0969da] transition-all"
-                title={org.login}
-              >
-                <img src={org.avatar_url} alt={org.login} className="w-full h-full object-cover" />
-              </a>
-            ))
+            <div className="flex flex-wrap gap-4">
+              {achievements.map((ach) => (
+                <div
+                  key={ach.id}
+                  className="relative cursor-pointer"
+                  onMouseEnter={(event) => {
+                    const rect = event.currentTarget.getBoundingClientRect();
+                    setTooltipPosition({ x: rect.left + rect.width / 2, y: rect.top });
+                    setHoveredAchievement(ach);
+                  }}
+                  onMouseLeave={() => setHoveredAchievement(null)}
+                >
+                  {ach.image ? (
+                    <img src={ach.image} alt={ach.name} className="w-12 h-12 rounded-full object-cover border-2 border-[#c5ced9] hover:border-[#0969da] transition-all" />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-[#e1e8ed] flex items-center justify-center text-xs text-[#57606a] border-2 border-[#c5ced9]">A</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+          {hoveredAchievement && (
+            <div
+              className="fixed z-50 max-w-xs rounded-lg border border-[#d0d7de] bg-white p-4 shadow-xl"
+              style={{
+                left: tooltipPosition.x,
+                top: tooltipPosition.y - 100,
+                transform: 'translateX(-50%)',
+                pointerEvents: 'none',
+              }}
+            >
+              {hoveredAchievement.image && (
+                <div className="mb-3">
+                  <img src={hoveredAchievement.image} alt={hoveredAchievement.name} className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-[#c5ced9]" />
+                </div>
+              )}
+              <p className="font-semibold text-base text-[#1f2328] text-center mb-2">{hoveredAchievement.name}</p>
+              <p className="text-sm text-[#57606a] text-center">{hoveredAchievement.description || 'Achievement earned!'}</p>
+            </div>
           )}
         </div>
       </div>

@@ -198,28 +198,131 @@ export async function fetchFollowers(limit = 9) {
   }));
 }
 
-export async function fetchOrganizations(limit = 9) {
-  const url = `https://api.github.com/users/${GITHUB_USERNAME}/orgs?per_page=${limit}`;
-  const response = await fetch(url, {
+export async function fetchUserAchievements(limit = 9) {
+  const baseUrl = `https://github.com/users/${GITHUB_USERNAME}/achievements`;
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`;
+
+  try {
+    const response = await fetch(proxyUrl, {
+      headers: { Accept: 'text/html' },
+    });
+
+    if (response.ok) {
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      const cards = Array.from(doc.querySelectorAll('.js-achievement-card-details'));
+      const achievements = cards
+        .map((card) => {
+          const slug = card.getAttribute('data-achievement-slug') || '';
+          const img = card.querySelector('img.achievement-badge-card');
+          const nameEl = card.querySelector('h3');
+          const linkEl = card.querySelector('a[href*="/achievements/"]');
+
+          const image = img?.getAttribute('src') || img?.getAttribute('data-src') || '';
+          const name = (nameEl?.textContent || img?.getAttribute('alt') || 'Achievement').trim();
+          const url = linkEl ? `https://github.com${linkEl.getAttribute('href')}` : baseUrl;
+
+          if (!image || !name) return null;
+
+          return {
+            id: slug || name,
+            name,
+            description: name,
+            image: image.startsWith('http') ? image : `https://github.githubassets.com${image}`,
+            url,
+          };
+        })
+        .filter(Boolean);
+
+      if (achievements.length > 0) {
+        const unique = Array.from(new Map(achievements.map((a) => [a.id, a])).values());
+        return unique.slice(0, limit);
+      }
+    }
+  } catch (e) {
+    console.warn('Achievement fetch fallback:', e);
+  }
+
+  // Final fallback as stats if HTML scrape fails
+  if (!GITHUB_TOKEN) {
+    return [];
+  }
+
+  const query = `
+    query($username: String!) {
+      user(login: $username) {
+        followers { totalCount }
+        repositories(privacy: PUBLIC) { totalCount }
+        starredRepositories { totalCount }
+        contributionsCollection {
+          totalCommitContributions
+          totalPullRequestContributions
+          totalIssueContributions
+          totalRepositoryContributions
+        }
+      }
+    }
+  `;
+
+  const response = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
     headers: {
-      Authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : undefined,
-      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
     },
+    body: JSON.stringify({ query, variables: { username: GITHUB_USERNAME } }),
   });
 
   if (!response.ok) {
-    throw new Error(`GitHub API organizations error: ${response.status}`);
+    throw new Error(`GitHub API achievements error: ${response.status}`);
   }
 
-  const orgs = await response.json();
+  const data = await response.json();
 
-  return orgs.map((org) => ({
-    login: org.login,
-    avatar_url: org.avatar_url,
-    html_url: org.html_url,
-    description: org.description || '',
-  }));
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+
+  const user = data.data?.user;
+  if (!user) {
+    return [];
+  }
+
+  const contribCollection = user.contributionsCollection || {};
+  const totalContributions =
+    (contribCollection.totalCommitContributions || 0) +
+    (contribCollection.totalPullRequestContributions || 0) +
+    (contribCollection.totalIssueContributions || 0) +
+    (contribCollection.totalRepositoryContributions || 0);
+
+  const result = [
+    {
+      id: 'contributions',
+      name: `Contributions: ${totalContributions}`,
+      description: `Commits/PRs/issues/repo contributions in last year.`,
+    },
+    {
+      id: 'public-repos',
+      name: `Public repositories: ${user.repositories?.totalCount || 0}`,
+      description: `Public repos owned by the user.`,
+    },
+    {
+      id: 'followers',
+      name: `Followers: ${user.followers?.totalCount || 0}`,
+      description: `GitHub followers count.`,
+    },
+    {
+      id: 'starred',
+      name: `Starred repos: ${user.starredRepositories?.totalCount || 0}`,
+      description: `Repositories starred by this user.`,
+    },
+  ];
+
+  return result.slice(0, limit);
 }
+
 
 export async function fetchRecentActivities(limit = 5) {
   const url = `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=${limit}`;
