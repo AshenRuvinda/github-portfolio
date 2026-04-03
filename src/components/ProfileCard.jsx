@@ -114,7 +114,7 @@ export default function ProfileCard() {
       {/* Name + handle */}
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-[#1f2328] leading-tight">Ashen Ruvinda</h1>
-        <p className="text-lg text-[#656d76] font-light">ashenruvinda</p>
+        <p className="text-lg text-[#656d76] font-light">@ashenruvinda</p>
       </div>
 
       {/* Bio */}
