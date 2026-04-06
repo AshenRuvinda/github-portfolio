@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import ProfileCard from './components/ProfileCard';
 import Overview from './pages/Overview';
@@ -23,6 +23,17 @@ function TabContent({ activeTab }) {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
+
+  const tabTitles = {
+    overview: 'Overview | Ashen Ruvinda',
+    repositories: 'Projects | Ashen Ruvinda',
+    experience: 'Experience | Ashen Ruvinda',
+    education: 'Education | Ashen Ruvinda',
+  };
+
+  useEffect(() => {
+    document.title = tabTitles[activeTab] || 'Ashen Ruvinda · Portfolio';
+  }, [activeTab]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
