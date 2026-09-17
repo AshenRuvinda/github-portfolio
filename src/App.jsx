@@ -5,6 +5,7 @@ import Overview from './pages/Overview';
 import Repositories from './pages/Repositories';
 import Experience from './pages/Experience';
 import Education from './pages/Education';
+import ProductsShipped from './pages/ProductsShipped';
 
 function TabContent({ activeTab }) {
   switch (activeTab) {
@@ -16,6 +17,8 @@ function TabContent({ activeTab }) {
       return <Experience />;
     case 'education':
       return <Education />;
+    case 'products':
+      return <ProductsShipped />;
     default:
       return <Overview />;
   }
@@ -29,6 +32,7 @@ export default function App() {
     repositories: 'Projects | Ashen Ruvinda',
     experience: 'Experience | Ashen Ruvinda',
     education: 'Education | Ashen Ruvinda',
+    products: 'Products Shipped | Ashen Ruvinda',
   };
 
   useEffect(() => {
