@@ -16,7 +16,7 @@ export default function Experience() {
   const totalYears = '1+';
   const companies = '1';
   const technologies = '6+';
-  const products = '0';
+  const products = '1';
 
   return (
     <div className="animate-slide-up space-y-6">
