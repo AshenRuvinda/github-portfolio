@@ -119,7 +119,7 @@ export default function ProfileCard() {
 
       {/* Bio */}
       <p className="text-sm text-[#1f2328] leading-relaxed mb-4">
-        Intern Software Engineer at Furo Labs Pvt Ltd. I work on full-stack development, automation, and product features. Based in Eheliyagoda, Sri Lanka.
+        I work on full-stack development, automation, and product features. Based in Eheliyagoda, Sri Lanka.
       </p>
 
       {/* Follow button */}
@@ -167,12 +167,6 @@ export default function ProfileCard() {
           </a>
         </li>
         <li className="flex items-center gap-2">
-          <LinkIcon />
-          <a href="https://labs.furo.lk/" className="text-[#0969da] hover:underline">
-            labs.furo.lk
-          </a>
-        </li>
-        <li className="flex items-center gap-2">
           <LinkedInIcon />
           <a href="https://www.linkedin.com/in/ashen-ruvinda-929b83345/" className="text-[#0969da] hover:underline">
             Ashen Ruvinda
@@ -202,25 +196,6 @@ export default function ProfileCard() {
             <div key={h.label} className="flex items-center gap-2 text-sm text-[#656d76]">
               <span className="flex-shrink-0">{h.icon}</span>
               <span>{h.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Divider */}
-      <hr className="my-5 border-[#d0d7de]" />
-
-      {/* Organizations */}
-      <div>
-        <h3 className="text-sm font-semibold text-[#1f2328] mb-3">Organizations</h3>
-        <div className="flex flex-wrap gap-2">
-          {['Furo Labs'].map((org) => (
-            <div
-              key={org}
-              title={org}
-              className="w-8 h-8 rounded-md bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs font-bold text-gray-600 cursor-pointer hover:ring-2 hover:ring-[#0969da] transition-all"
-            >
-              {org[0]}
             </div>
           ))}
         </div>
