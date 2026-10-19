@@ -298,6 +298,41 @@ export default function CV({ onTabChange }) {
             </div>
           </div>
         </section>
+
+        {/* References */}
+        <section>
+          <h2 className="text-xs font-bold tracking-wider uppercase text-[#656d76] mb-3 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#0969da]" />
+            References
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-lg border border-[#d0d7de] bg-[#f6f8fa] space-y-1">
+              <h3 className="text-sm font-semibold text-[#1f2328]">Diluka Wijesinghe</h3>
+              <p className="text-xs font-medium text-[#0969da]">Lecturer</p>
+              <p className="text-xs text-[#656d76]">
+                Software Engineering & Information Systems Department
+              </p>
+              <p className="text-xs text-[#656d76]">NSBM Green University</p>
+              <div className="pt-1.5">
+                <a
+                  href="mailto:diluka.w@nsbm.ac.lk"
+                  className="inline-flex items-center gap-1.5 text-xs text-[#0969da] hover:underline"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <span>diluka.w@nsbm.ac.lk</span>
+                </a>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-lg border border-[#d0d7de] bg-[#f6f8fa] space-y-1">
+              <h3 className="text-sm font-semibold text-[#1f2328]">Dilshan Wijegunasekera</h3>
+              <p className="text-xs font-medium text-[#0969da]">PR & Business Director</p>
+              <p className="text-xs text-[#656d76]">Omnicom Media Group | Sri Lanka</p>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

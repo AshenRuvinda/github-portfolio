@@ -4,8 +4,8 @@ export const experiences = [
     role: "Intern Software Engineer",
     company: "Furo Labs Pvt Ltd",
     companyUrl: "https://furolabs.com",
-    period: "Feb 2026 – Present",
-    duration: "about 2 months",
+    period: "Feb 2026 – Sep 2026",
+    duration: "8 months",
     location: "Remote",
     description:
       "Working as an intern software engineer on full-stack product features at Furo Labs. Responsible for building and testing React/Node.js components, API endpoints, and CI/CD deployment automation.",
