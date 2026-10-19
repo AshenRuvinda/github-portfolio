@@ -7,19 +7,22 @@ import Experience from './pages/Experience';
 import Education from './pages/Education';
 import ProductsShipped from './pages/ProductsShipped';
 import LetsWorkTogether from './pages/LetsWorkTogether';
+import CV from './pages/CV';
 
-function TabContent({ activeTab }) {
+function TabContent({ activeTab, onTabChange }) {
   switch (activeTab) {
     case 'overview':
       return <Overview />;
     case 'repositories':
       return <Repositories />;
     case 'experience':
-      return <Experience />;
+      return <Experience onTabChange={onTabChange} />;
     case 'education':
       return <Education />;
     case 'products':
       return <ProductsShipped />;
+    case 'cv':
+      return <CV onTabChange={onTabChange} />;
     case 'work':
       return <LetsWorkTogether />;
     default:
@@ -36,6 +39,7 @@ export default function App() {
     experience: 'Experience | Ashen Ruvinda',
     education: 'Education | Ashen Ruvinda',
     products: 'Products Shipped | Ashen Ruvinda',
+    cv: 'Curriculum Vitae | Ashen Ruvinda',
     work: 'Let\'s Work Together | Ashen Ruvinda',
   };
 
@@ -60,12 +64,12 @@ export default function App() {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left: Profile sidebar */}
           <aside className={`w-full md:w-[296px] flex-shrink-0 ${activeTab === 'overview' ? 'block' : 'hidden md:block'}`}>
-            <ProfileCard />
+            <ProfileCard onNavigateToCv={() => handleTabChange('cv')} />
           </aside>
 
           {/* Right: Tab content */}
           <div className={`flex-1 min-w-0 ${activeTab === 'overview' ? 'md:ml-0' : ''}`}>
-            <TabContent activeTab={activeTab} />
+            <TabContent activeTab={activeTab} onTabChange={handleTabChange} />
           </div>
         </div>
       </main>

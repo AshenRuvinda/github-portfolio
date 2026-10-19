@@ -12,7 +12,7 @@ function StatCard({ icon, label, value }) {
   );
 }
 
-export default function Experience() {
+export default function Experience({ onTabChange }) {
   const totalYears = '1+';
   const companies = '1';
   const technologies = '6+';
@@ -31,16 +31,15 @@ export default function Experience() {
       {/* Timeline header */}
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-[#1f2328]">Work History</h2>
-        <a
-          href="#"
-          className="text-xs text-[#0969da] hover:underline font-medium flex items-center gap-1"
-          onClick={(e) => e.preventDefault()}
+        <button
+          onClick={() => onTabChange && onTabChange('cv')}
+          className="text-xs text-[#0969da] hover:underline font-medium flex items-center gap-1 cursor-pointer"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          Download Resume
-        </a>
+          View Curriculum Vitae (CV)
+        </button>
       </div>
 
       {/* Timeline */}

@@ -39,7 +39,7 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-export default function ProfileCard() {
+export default function ProfileCard({ onNavigateToCv }) {
   const [following, setFollowing] = useState(false);
   const [followers, setFollowers] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -136,8 +136,15 @@ export default function ProfileCard() {
           >
             {following ? 'Following' : 'Follow'}
           </button>
-          <button className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#d0d7de] bg-[#f6f8fa] hover:bg-[#f3f4f6] hover:border-[#afb8c1] text-[#1f2328] transition-all">
-            Sponsor
+          <button
+            onClick={onNavigateToCv}
+            className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#d0d7de] bg-[#f6f8fa] hover:bg-[#f3f4f6] hover:border-[#afb8c1] text-[#1f2328] transition-all flex items-center gap-1.5"
+            title="View Curriculum Vitae"
+          >
+            <svg className="w-4 h-4 text-[#656d76]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            CV
           </button>
         </div>
         {followError && <p className="text-xs text-red-600">{followError}</p>}
