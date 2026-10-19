@@ -60,7 +60,7 @@ export default function App() {
       {/* Tab navigation - REMOVED: Now integrated in navbar */}
 
       {/* Main content */}
-      <main className="max-w-[1280px] mx-auto px-4 py-6">
+      <main className="max-w-[1280px] mx-auto px-3 sm:px-6 py-4 sm:py-6">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left: Profile sidebar */}
           <aside className={`w-full md:w-[296px] flex-shrink-0 ${activeTab === 'overview' ? 'block' : 'hidden md:block'}`}>

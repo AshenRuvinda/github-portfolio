@@ -200,10 +200,10 @@ function ReadmeCard() {
         <span className="text-sm font-semibold text-[#1f2328]">ashenruvinda</span>
         <span className="text-sm text-[#656d76]">/ README.md</span>
       </div>
-      <div className="p-6 prose prose-sm max-w-none">
+      <div className="p-4 sm:p-6 prose prose-sm max-w-none">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-[#1f2328] mb-1">Hi, I'm Ashen Ruvinda</h1>
-          <p className="text-[#656d76]">Intern Software Engineer at Furo Labs Pvt Ltd · Open Source Enthusiast</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-[#1f2328] mb-1">Hi, I'm Ashen Ruvinda</h1>
+          <p className="text-sm sm:text-base text-[#656d76]">Intern Software Engineer at Furo Labs Pvt Ltd · Open Source Enthusiast</p>
           <div className="flex flex-wrap justify-center gap-2 mt-3">
             {[
               { label: 'Profile Views', value: '24k', color: 'bg-blue-100 text-blue-800' },

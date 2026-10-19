@@ -8,9 +8,9 @@ export default function ProductsShipped() {
         <h2 className="text-xl font-semibold text-[#111827]">Products Shipped</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {productsShipped.map((product) => (
-          <div key={product.id} className="relative overflow-hidden flex flex-col p-6 bg-white border border-[#e5e7eb] rounded-xl shadow-sm hover:shadow-md transition-shadow">
+          <div key={product.id} className="relative overflow-hidden flex flex-col p-4 sm:p-6 bg-white border border-[#e5e7eb] rounded-xl shadow-sm hover:shadow-md transition-shadow">
             
             {/* Top Content (Pill and Title) */}
             <div className="relative z-10 text-left mb-4">

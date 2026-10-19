@@ -23,10 +23,10 @@ export default function CV({ onTabChange }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border border-[#d0d7de] bg-white hover:bg-[#f3f4f6] text-[#1f2328] transition-all shadow-sm"
+            className="flex-1 sm:flex-none justify-center flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border border-[#d0d7de] bg-white hover:bg-[#f3f4f6] text-[#1f2328] transition-all shadow-sm"
           >
             <svg className="w-3.5 h-3.5 text-[#656d76]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -37,7 +37,7 @@ export default function CV({ onTabChange }) {
           {onTabChange && (
             <button
               onClick={() => onTabChange('work')}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-[#1f2328] hover:bg-[#31373d] text-white transition-all shadow-sm"
+              className="flex-1 sm:flex-none justify-center flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-[#1f2328] hover:bg-[#31373d] text-white transition-all shadow-sm"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -49,13 +49,13 @@ export default function CV({ onTabChange }) {
       </div>
 
       {/* CV Sheet Container */}
-      <div className="bg-white border border-[#d0d7de] rounded-xl shadow-sm p-6 sm:p-10 space-y-8 text-[#1f2328]">
+      <div className="bg-white border border-[#d0d7de] rounded-xl shadow-sm p-4 sm:p-8 lg:p-10 space-y-6 sm:space-y-8 text-[#1f2328]">
         {/* Header */}
-        <div className="border-b border-[#d0d7de] pb-6">
+        <div className="border-b border-[#d0d7de] pb-5 sm:pb-6">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-extrabold text-[#1f2328] tracking-tight">Ashen Ruvinda</h1>
-              <p className="text-base font-medium text-[#0969da] mt-1">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1f2328] tracking-tight">Ashen Ruvinda</h1>
+              <p className="text-sm sm:text-base font-medium text-[#0969da] mt-1">
                 Software Engineering Undergraduate · Full Stack Developer
               </p>
               <p className="text-xs text-[#656d76] mt-1">

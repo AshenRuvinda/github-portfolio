@@ -94,14 +94,14 @@ export default function LetsWorkTogether() {
           </div>
 
           {/* Contact Details & Socials */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 rounded-xl border border-[#d0d7de] bg-[#f6f8fa]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4 sm:p-6 rounded-xl border border-[#d0d7de] bg-[#f6f8fa]">
             <div>
               <h3 className="text-sm font-semibold text-[#1f2328] mb-3 uppercase tracking-wider">Contact Details</h3>
               <ul className="space-y-3">
                 <li>
                   <a href="mailto:ashenave@gmail.com" className="flex items-center gap-3 text-sm text-[#0969da] hover:underline group">
                     <MailIcon />
-                    <span className="group-hover:text-[#0353a4]">ashenave@gmail.com</span>
+                    <span className="group-hover:text-[#0353a4] break-all">ashenave@gmail.com</span>
                   </a>
                 </li>
                 <li>
@@ -132,7 +132,7 @@ export default function LetsWorkTogether() {
 
         {/* Right Column: Contact Form */}
         <div>
-          <div className="p-6 bg-white border border-[#d0d7de] rounded-xl shadow-sm lg:sticky lg:top-24">
+          <div className="p-4 sm:p-6 bg-white border border-[#d0d7de] rounded-xl shadow-sm lg:sticky lg:top-24">
             <h3 className="text-xl font-semibold text-[#1f2328] mb-2">Send a Message</h3>
             <p className="text-sm text-[#656d76] mb-6">Fill out the form below and I'll get back to you as soon as possible.</p>
             

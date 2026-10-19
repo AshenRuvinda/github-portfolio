@@ -79,8 +79,8 @@ export default function Skills() {
   return (
     <div className="space-y-6">
       {/* Top Languages */}
-      <div className="border border-[#d0d7de] rounded-lg p-5 bg-white">
-        <h3 className="text-sm font-semibold text-[#1f2328] mb-4">Top Languages</h3>
+      <div className="border border-[#d0d7de] rounded-lg p-4 sm:p-5 bg-white">
+        <h3 className="text-sm font-semibold text-[#1f2328] mb-3 sm:mb-4">Top Languages</h3>
         {isLangLoading ? (
           <p className="text-xs text-[#656d76]">Loading top languages...</p>
         ) : langError ? (
@@ -98,7 +98,7 @@ export default function Skills() {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-3 text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-3 text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
                 activeCategory === cat.id
                   ? 'bg-white text-[#1f2328] border-b-2 border-[#fd8c73] -mb-px'
                   : 'bg-[#f6f8fa] text-[#656d76] hover:text-[#1f2328] hover:bg-white'
@@ -110,7 +110,7 @@ export default function Skills() {
         </div>
 
         {/* Skills grid */}
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {current.skills.map((skill) => (
               <SkillBar key={skill.name} skill={skill} />

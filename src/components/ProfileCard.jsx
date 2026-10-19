@@ -91,8 +91,8 @@ export default function ProfileCard({ onNavigateToCv }) {
   return (
     <aside className="w-full">
       {/* Avatar */}
-      <div className="relative mb-4">
-        <div className="w-full aspect-square max-w-[260px] mx-auto md:mx-0 rounded-full overflow-hidden border-4 border-white shadow-md">
+      <div className="relative mb-4 max-w-[260px] mx-auto md:mx-0">
+        <div className="w-full aspect-square rounded-full overflow-hidden border-4 border-white shadow-md">
           <img
             src={profileImage}
             alt="Ashen Ruvinda"
@@ -108,7 +108,7 @@ export default function ProfileCard({ onNavigateToCv }) {
           </div>
         </div>
         {/* Online indicator */}
-        <div className="absolute bottom-2 right-[calc(50%-130px)] md:right-auto md:left-[200px] w-6 h-6 bg-green-400 rounded-full border-4 border-white shadow-sm"></div>
+        <div className="absolute bottom-2 right-4 md:right-4 w-6 h-6 bg-green-400 rounded-full border-4 border-white shadow-sm" title="Active"></div>
       </div>
 
       {/* Name + handle */}
