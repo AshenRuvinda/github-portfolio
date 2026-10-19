@@ -4,7 +4,7 @@
  */
 
 // You can set this to an internet URL for your profile picture
-export const PROFILE_IMAGE_URL = 'https://github.com/AshenRuvinda/ProjectImages/blob/master/profile.jpg?raw=true'; // Replace with your internet image URL
+export const PROFILE_IMAGE_URL = 'https://github.com/AshenRuvinda/ProjectImages/blob/master/IMG_2218.PNG?raw=true'; // Replace with your internet image URL
 
 // Fallback image (gradient with initials)
 export const FALLBACK_AVATAR = {
