@@ -15,5 +15,20 @@ export const productsShipped = [
   url: 'https://olinton.lk'
 
   },
+  {
+  id: 2, // change to next appropriate ID in your list
+  title: 'Digital Marketing Intern Portfolio',
+  tag: 'Personal Portfolio & Brand Experience',
+  description:
+    'A bespoke, high-performance personal portfolio built for a Digital Marketing professional. Features an interactive 3D WebGL Earth globe skills visualizer, dynamic SEO architecture with JSON-LD schema, and fluid animations tailored for modern web browsers.',
+  screenshot:
+    'https://github.com/AshenRuvinda/ProjectImages/blob/master/screencapture-localhost-3000-2026-10-21-01_53_59.png?raw=true', 
+  deviceFrame: '/pc.png',
+  language: 'Next.js',
+  languageColor: '#000000',
+  stars: 0,
+  url: 'https://dhananjijayasinghe.live'
+},
+
  
 ];
