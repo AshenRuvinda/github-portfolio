@@ -1,0 +1,19 @@
+{
+  "active": true,
+  "badge": "Portfolio Services",
+  "tag": "Available for Hire",
+  "status": "Open",
+  "title": "Need a Modern Portfolio?",
+  "subtitle": "Professional websites built for developers, businesses & photographers.",
+  "description": "High-performance portfolio websites crafted with modern React, responsive UI, SEO architecture, and fast delivery to elevate your personal or business brand.",
+  "features": [
+    "Portfolio Website Creation",
+    "Business Portfolio + Hosting",
+    "Photography Portfolio + Hosting"
+  ],
+  "savingsBadge": "Starting from LKR 20,000",
+  "ctaText": "Book on WhatsApp",
+  "exploreText": "Explore Packages",
+  "whatsappNumber": "94761511231",
+  "whatsappMessage": "Hi Ashen, I saw your portfolio services on your website and I'd like to discuss building a portfolio for my project."
+}

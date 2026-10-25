@@ -6,19 +6,22 @@ import Repositories from './pages/Repositories';
 import Experience from './pages/Experience';
 import Education from './pages/Education';
 import ProductsShipped from './pages/ProductsShipped';
+import Packages from './pages/Packages';
 import LetsWorkTogether from './pages/LetsWorkTogether';
 import CV from './pages/CV';
 
 function TabContent({ activeTab, onTabChange }) {
   switch (activeTab) {
     case 'overview':
-      return <Overview />;
+      return <Overview onTabChange={onTabChange} />;
     case 'repositories':
       return <Repositories />;
     case 'experience':
       return <Experience onTabChange={onTabChange} />;
     case 'education':
       return <Education />;
+    case 'packages':
+      return <Packages onTabChange={onTabChange} />;
     case 'products':
       return <ProductsShipped />;
     case 'cv':
@@ -38,6 +41,7 @@ export default function App() {
     repositories: 'Projects | Ashen Ruvinda',
     experience: 'Experience | Ashen Ruvinda',
     education: 'Education | Ashen Ruvinda',
+    packages: 'Packages | Ashen Ruvinda',
     products: 'Products Shipped | Ashen Ruvinda',
     cv: 'Curriculum Vitae | Ashen Ruvinda',
     work: 'Let\'s Work Together | Ashen Ruvinda',
