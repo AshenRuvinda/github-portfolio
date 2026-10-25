@@ -17,7 +17,7 @@ export const softwarePackages = [
       "Fast loading speed, mobile responsiveness & Clean modern typography",
       "14 days post-launch support & revision cycles",
     ],
-    technologies: ["React / Next.js1", "Vite", "Tailwind CSS", "JavaScript"],
+    technologies: ["React / Next.js", "Vite", "Tailwind CSS", "JavaScript"],
     idealFor: "Software Developers, Tech Professionals, Designers, Freelancers",
   },
   {
