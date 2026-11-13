@@ -28,9 +28,9 @@ export const educationData = [
 
   category: "Final Year Undergraduate Research / BSc Honours in Software Engineering",
 
-  status: "Done",
+  status: "B+",
 
-  supervisor: "Faculty of Computing, NSBM Green University",
+  supervisor: "Ms.Pavithra Subhashini, Faculty of Computing, NSBM Green University",
 
   abstract:
     "This research focuses on designing and developing a digital eligibility verification system to improve the accuracy, transparency, and efficiency of Aswesuma welfare beneficiary selection in Sri Lanka. The study investigates how data-driven eligibility assessment, automated poverty classification, and digital verification mechanisms can reduce inclusion and exclusion errors in the existing beneficiary selection process. Following a Design Science Research Methodology (DSRM), the proposed solution incorporates a structured eligibility scoring mechanism, poverty classification, role-based access control, audit trails, and an appeals management process. The research aims to support more reliable and transparent welfare distribution through a technology-driven decision-support system.",
