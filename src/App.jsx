@@ -7,10 +7,12 @@ import Experience from './pages/Experience';
 import Education from './pages/Education';
 import ProductsShipped from './pages/ProductsShipped';
 import Packages from './pages/Packages';
+import Showcase from './pages/Showcase';
+import ShowcaseDetail from './pages/ShowcaseDetail';
 import LetsWorkTogether from './pages/LetsWorkTogether';
 import CV from './pages/CV';
 
-function TabContent({ activeTab, onTabChange }) {
+function TabContent({ activeTab, onTabChange, selectedShowcaseId, onSelectShowcase, onBackShowcase }) {
   switch (activeTab) {
     case 'overview':
       return <Overview onTabChange={onTabChange} />;
@@ -24,6 +26,11 @@ function TabContent({ activeTab, onTabChange }) {
       return <Packages onTabChange={onTabChange} />;
     case 'products':
       return <ProductsShipped />;
+    case 'showcase-detail':
+      return <ShowcaseDetail projectId={selectedShowcaseId} onBack={onBackShowcase} />;
+    case 'showcase':
+    case 'blog':
+      return <Showcase onSelectProject={onSelectShowcase} />;
     case 'cv':
       return <CV onTabChange={onTabChange} />;
     case 'work':
@@ -35,6 +42,7 @@ function TabContent({ activeTab, onTabChange }) {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedShowcaseId, setSelectedShowcaseId] = useState(null);
 
   const tabTitles = {
     overview: 'Overview | Ashen Ruvinda',
@@ -43,6 +51,9 @@ export default function App() {
     education: 'Education | Ashen Ruvinda',
     packages: 'Packages | Ashen Ruvinda',
     products: 'Products Shipped | Ashen Ruvinda',
+    showcase: 'Showcase | Ashen Ruvinda',
+    'showcase-detail': 'Project Details | Ashen Ruvinda',
+    blog: 'Showcase | Ashen Ruvinda',
     cv: 'Curriculum Vitae | Ashen Ruvinda',
     work: 'Let\'s Work Together | Ashen Ruvinda',
   };
@@ -56,10 +67,24 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleSelectShowcase = (id) => {
+    setSelectedShowcaseId(id);
+    setActiveTab('showcase-detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackShowcase = () => {
+    setActiveTab('showcase');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Top navbar */}
-      <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
+      <Navbar
+        activeTab={activeTab === 'showcase-detail' ? 'showcase' : activeTab}
+        onTabChange={handleTabChange}
+      />
 
       {/* Tab navigation - REMOVED: Now integrated in navbar */}
 
@@ -73,7 +98,13 @@ export default function App() {
 
           {/* Right: Tab content */}
           <div className={`flex-1 min-w-0 ${activeTab === 'overview' ? 'md:ml-0' : ''}`}>
-            <TabContent activeTab={activeTab} onTabChange={handleTabChange} />
+            <TabContent
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+              selectedShowcaseId={selectedShowcaseId}
+              onSelectShowcase={handleSelectShowcase}
+              onBackShowcase={handleBackShowcase}
+            />
           </div>
         </div>
       </main>

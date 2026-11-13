@@ -65,7 +65,7 @@ const tabs = [
   },
   {
     id: 'products',
-    label: 'Products Shipped',
+    label: 'Shipped',
     icon: (
       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -74,8 +74,17 @@ const tabs = [
     count: 2,
   },
   {
+    id: 'showcase',
+    label: 'Showcase',
+    icon: (
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
+  {
     id: 'work',
-    label: "Let's work together",
+    label: "Contact",
     icon: (
       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -97,7 +106,7 @@ export default function Navbar({ activeTab, onTabChange }) {
         </a>
 
         {/* Search */}
-        <div className="relative flex-1 max-w-[280px] hidden sm:block">
+        <div className="relative flex-1 max-w-[200px] lg:max-w-[260px] hidden sm:block">
           <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
             <SearchIcon />
           </div>
@@ -114,7 +123,7 @@ export default function Navbar({ activeTab, onTabChange }) {
         </div>
 
         {/* Portfolio Tabs */}
-        <nav className="hidden md:flex items-center gap-1 ml-2">
+        <nav className="hidden lg:flex items-center gap-1 ml-2 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -141,7 +150,7 @@ export default function Navbar({ activeTab, onTabChange }) {
         </nav>
 
         {/* Mobile Menu Button */}
-        <div className="flex items-center ml-auto md:hidden">
+        <div className="flex items-center ml-auto lg:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-2 text-[#e6edf3] hover:text-white hover:bg-white/10 rounded-md transition-colors"
@@ -160,7 +169,7 @@ export default function Navbar({ activeTab, onTabChange }) {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-[#1c2128] border-t border-[#3d444d]">
+        <div className="lg:hidden bg-[#1c2128] border-t border-[#3d444d]">
           <nav className="px-4 py-2 space-y-1">
             {tabs.map((tab) => (
               <button
