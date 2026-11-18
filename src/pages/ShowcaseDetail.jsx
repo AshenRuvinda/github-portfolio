@@ -118,7 +118,20 @@ export default function ShowcaseDetail({ projectId, onBack }) {
           </div>
         )}
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {project.downloadUrl && (
+            <a
+              href={project.downloadUrl}
+              download
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold rounded-md bg-[#238636] hover:bg-[#2ea043] text-white transition-colors shadow-sm"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>{project.downloadLabel || 'Download Software'}</span>
+            </a>
+          )}
           {project.repoUrl && (
             <a
               href={project.repoUrl}
@@ -217,6 +230,39 @@ export default function ShowcaseDetail({ projectId, onBack }) {
 
         {/* Right 1 Col: Tech Spec & Key Milestones */}
         <div className="space-y-6">
+          {/* Direct Download Card if project offers desktop software */}
+          {project.downloadUrl && (
+            <div className="bg-gradient-to-br from-[#0d1117] to-[#161b22] border border-[#30363d] rounded-xl p-5 text-white shadow-md">
+              <div className="flex items-center gap-2 mb-2 text-[#58a6ff]">
+                <svg className="w-5 h-5 text-[#3fb950]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <h2 className="text-sm font-bold uppercase tracking-wider text-white">
+                  Desktop Companion App
+                </h2>
+              </div>
+              <p className="text-xs text-[#8b949e] mb-4 leading-relaxed">
+                Install the local UDP telemetry companion to stream EA SPORTS F1 25 packets straight to the cloud.
+              </p>
+              <a
+                href={project.downloadUrl}
+                download
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-[#238636] hover:bg-[#2ea043] text-white transition-all shadow-sm group"
+              >
+                <svg className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>{project.downloadLabel || 'Download Software'}</span>
+              </a>
+              {project.downloadInfo && (
+                <div className="text-[11px] text-[#8b949e] text-center mt-2 font-mono">
+                  {project.downloadInfo}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Tech Stack */}
           <div className="bg-white border border-[#d0d7de] rounded-xl p-5 shadow-sm">
             <h2 className="text-sm font-bold text-[#1f2328] mb-3 uppercase tracking-wider">

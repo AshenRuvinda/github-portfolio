@@ -180,12 +180,29 @@ export default function Showcase({ onSelectProject }) {
                     Updated: <span className="font-medium text-[#1f2328]">{project.lastUpdated}</span>
                   </span>
 
-                  <span className="text-[#0969da] font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    Read Details
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {project.downloadUrl && (
+                      <a
+                        href={project.downloadUrl}
+                        download
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#1f2328] hover:bg-[#2da44e] text-white rounded-md font-semibold text-[11px] transition-colors shadow-2xs"
+                        title="Download Desktop Software"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Download
+                      </a>
+                    )}
+                    <span className="text-[#0969da] font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      Read Details
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
