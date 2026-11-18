@@ -5,8 +5,8 @@ export const educationData = [
     school: "NSBM Green University",
     schoolUrl: "https://www.nsbm.ac.lk",
     faculty: "Faculty of Computing",
-    period: "2022 – Present",
-    status: "Undergraduate (Final Year)",
+    period: "2022 – 2026",
+    status: "Graduate / Degree Completed",
     location: "Pitipana, Homagama, Sri Lanka",
     campusImage: "https://students.nsbm.ac.lk/_next/image?url=%2Fhome2%2Fnsbm-campus.jpg&w=3840&q=75",
     campusGallery: [
