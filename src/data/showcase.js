@@ -98,4 +98,52 @@ export const showcaseItems = [
     repoUrl: 'https://github.com/AshenRuvinda/F125WebApp',
     lastUpdated: 'Nov 2026',
   },
+  {
+    id: 3,
+    title: 'Nissan GT-R R35 Nismo 3D Experience',
+    subtitle: 'Interactive 3D Web Visualizer, Real-Time Configurator & Cinematic Showcase',
+    status: 'In Active Development',
+    progress: 85,
+    category: 'Interactive 3D Web App',
+    featured: true,
+    thumbnail: 'https://cimg2.ibsrv.net/ibimg/hgm/1920x1080-1/100/736/2020-nissan-gt-r_100736666.jpg',
+    videoUrl: '',
+    gallery: [
+      'https://cimg2.ibsrv.net/ibimg/hgm/1920x1080-1/100/736/2020-nissan-gt-r_100736666.jpg',
+      
+    ],
+    tags: ['Three.js', 'React Three Fiber', 'Next.js 16', 'GLSL Shaders', 'GSAP', 'Tailwind CSS', 'Framer Motion'],
+    description:
+      'A cinematic, interactive 3D web experience showcasing the iconic 2022 Nissan GT-R R35 Nismo. Features real-time mesh rendering, dynamic camera transitions, and an interactive bespoke color customizer.',
+    overview:
+      'The Nissan GT-R R35 Nismo 3D Experience pushes modern browser graphics to their limits using Three.js and React Three Fiber. Users can explore every aerodynamic contour in real time, inspect carbon-fiber aero packages, interact with dynamic studio lighting, and customize factory exterior paint finishes with physically accurate PBR clearcoat reflections.',
+    architecture: [
+      {
+        title: 'React Three Fiber & Drei 3D Pipeline',
+        detail: 'High-fidelity GLTF/GLB model rendering with optimized draw calls, custom environment HDR lighting, and shadow contact planes.',
+      },
+      {
+        title: 'Real-Time PBR Material Customizer',
+        detail: 'Dynamic shader material manipulation allowing real-time switching of factory paint finishes (Stealth Gray, Ultimate Silver, Pearl Black, Brilliant White) with clearcoat roughness and metallic flake effects.',
+      },
+      {
+        title: 'Smooth Camera Physics with GSAP & Framer Motion',
+        detail: 'Interpolated orbit camera choreography guiding users seamlessly between hero, exterior, cockpit, and engineering spec camera views.',
+      },
+      {
+        title: 'Responsive Next.js 16 App Architecture',
+        detail: 'Modern Next.js 16 architecture optimized with Turbopack, responsive HUD overlays, and preloader asset optimization.',
+      },
+    ],
+    highlights: [
+      'High-fidelity 3D model of the 2022 Nissan GT-R R35 Nismo',
+      'Interactive real-time 360° orbital exploration with dynamic zoom and pan',
+      'Real-time bespoke color customizer with physically based rendering (PBR)',
+      'Cinematic camera choreography powered by GSAP and React Three Fiber',
+      'Engineered with modern Next.js 16, React 19, and Tailwind CSS',
+    ],
+    demoUrl: 'https://3-dwebsite-git-main-ashen-ruvindas-projects.vercel.app/',
+    repoUrl: 'https://github.com/AshenRuvinda/3Dwebsite',
+    lastUpdated: 'Nov 2026',
+  },
 ];
